@@ -1,0 +1,148 @@
+body {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  height:auto
+}
+
+.main-header {
+  background-color: #2581ba;
+  width: 100vw;
+  height: 70px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; 
+}
+
+.logo-title {
+  font-family: Righteous;
+  font-size: 30px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.tagline {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-top: 9px;
+}
+
+.lang-switcher {
+  position: relative;
+  display: flex;
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lang-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.lang-button i {
+  margin-right: 8px;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #333;
+  min-width: 80px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 5px 0;
+  text-align: center;
+}
+
+.dropdown a {
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.8rem;
+}
+
+.dropdown a:hover {
+  background-color: #555;
+}
+
+.hero h1 {
+  color: #2581ba;
+  text-align: left;
+  font-family: Righteous;
+  font-size: 30px;
+  margin-left: 30px;
+  margin-top: 100px;
+}
+
+.category-intro p {
+  color: black;
+  font-family: Righteous;
+  text-align: center;
+  font-size: 28px;
+  margin-top: 50px;
+}
+
+.categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 120px;
+  margin-top: 70px;
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 70px;
+}
+
+.category-card {
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+}
+
+.category-card img {
+  width: 278px;
+  height: 140px;
+  border-radius: 20px;
+  filter: brightness(1);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.category-card span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  z-index: 2;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.category-card:hover img {
+  filter: brightness(0.7);
+  transform: scale(1.05);
+}
