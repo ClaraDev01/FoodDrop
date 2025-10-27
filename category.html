@@ -49,11 +49,28 @@
         <div class="menu-items" id="drinks"></div>
       </section>
 
-      <section class="category-title">
+      <section class="category-title" style="margin-bottom: 100px;">
         <h1>Finally, choose your dessert:</h1>
         <div class="menu-items" id="desserts"></div>
       </section>
     </main>
+
+    <div class="checkout-container">
+        <div class="checkout-button" disabled onclick="verifyOrder()">
+            <button class="disabled" id="checkout-button-text">Select 3 items<br>to close the order!</button>
+        </div>
+    </div>
+
+    <div id="information-modal" class="hidden information-modal-backdrop">
+        <div class="confirmation-box">
+            <h1 id="confirm-order-title" style="margin-bottom:25px;">Confirm your order</h1>
+            <ul id="order-details">
+            </ul>
+            <p id="order-total" style="margin-top: 12px"><strong>Total: $0.00</strong></p> 
+            <a href="#" class="confirm-order-button" style="margin-top: 20px;" onclick="confirmOrder()">Confirm and Place Order!</a>
+            <button class="cancel-button" onclick="cancelOrder()">Cancel order</button> 
+        </div>
+    </div>
 
     <script src="category.js"></script>
   </body>

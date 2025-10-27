@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const categoryType = params.get("type");
 
+    let selectedItems = {
+        mainCourses: null,
+        drinks: null,
+        desserts: null
+    };
+
     const translations = {
         'en': {
             display: 'EN',
@@ -9,6 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
             titleMainCourse: 'First, choose your main course:',
             titleDrinks: 'Now, choose your beverage:',
             titleDesserts: 'Finally, choose your dessert:',
+            checkoutDisabled: 'Select 3 items<br>to close the order!',
+            checkoutEnabled: 'Close Order!',
+            confirmTitle: 'Confirm your order',
+            confirmTotal: 'Total:',
+            confirmButton: 'Confirm and Place Order!',
+            cancelButton: 'Cancel order',
+            whatsappMessage: 'Hello, I would like to place an order:\n - Main Course: {mainCourse}\n - Drink: {drink}\n - Dessert: {dessert}\n Total: {total}',
         },
         'pt': {
             display: 'PT',
@@ -16,6 +29,13 @@ document.addEventListener("DOMContentLoaded", () => {
             titleMainCourse: 'Primeiro, escolha seu prato principal:',
             titleDrinks: 'Agora, escolha sua bebida:',
             titleDesserts: 'Por fim, escolha sua sobremesa:',
+            checkoutDisabled: 'Selecione os 3 itens<br>para fechar o pedido!',
+            checkoutEnabled: 'Fechar Pedido!',
+            confirmTitle: 'Confirme seu pedido',
+            confirmTotal: 'Total:',
+            confirmButton: 'Tudo certo, pode pedir!',
+            cancelButton: 'Cancelar pedido',
+            whatsappMessage: 'Olá, gostaria de fazer o pedido:\n - Prato: {mainCourse}\n - Bebida: {drink}\n - Sobremesa: {dessert}\n Total: {total}', 
         }
     };
 
@@ -120,13 +140,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const titleDrinksElement = titleElements[1];
     const titleDessertsElement = titleElements[2];
 
-    function createMenuItemCard(item, lang) {
+    window.verifyOrder = verifyOrder;
+    window.closeOrder = closeOrder;
+    window.confirmOrder = confirmOrder;
+    window.cancelOrder = cancelOrder;
+
+    function createMenuItemCard(item, lang, itemType) {
         const descriptionKey = `description_${lang}`;
         const description = item[descriptionKey] || item.description_en;
         const dishName = item[`name_${lang}`] || item.name_en;
 
         return `
-            <div class="card">
+            <div class="card" data-item-type="${itemType}">
                 <img src="${item.img}" alt="${dishName}">
                 <h2>${dishName}</h2>
                 <p>${description}</p>
@@ -151,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (items && container) {
                     container.innerHTML = items
-                        .map(item => createMenuItemCard(item, lang))
+                        .map(item => createMenuItemCard(item, lang, key))
                         .join("");
                 }
             }
@@ -176,14 +201,145 @@ document.addEventListener("DOMContentLoaded", () => {
         const clickedCard = event.target.closest('.card');
 
         if (clickedCard && container.contains(clickedCard)) {
+            const sectionId = clickedCard.getAttribute('data-item-type');
             const allCardsInSection = container.querySelectorAll('.card');
+
             allCardsInSection.forEach(card => {
                 if (card !== clickedCard) {
                     card.classList.remove('selected');
                 }
             });
+
             clickedCard.classList.toggle('selected');
+
+            if (clickedCard.classList.contains('selected')) {
+                selectedItems[sectionId] = {
+                    name: clickedCard.querySelector('h2').textContent,
+                    price: clickedCard.querySelector('.price').textContent
+                };
+            } else {
+                selectedItems[sectionId] = null;
+            }
+
+            verifyOrder();
         }
+    }
+
+    function updateCheckoutButton(lang) {
+        const buttonDiv = document.querySelector('.checkout-button');
+        const buttonTextElement = document.getElementById('checkout-button-text');
+        const t = translations[lang];
+
+        const allSelected = selectedItems.mainCourses && selectedItems.drinks && selectedItems.desserts;
+
+        if (allSelected) {
+            buttonTextElement.classList.remove('disabled');
+            buttonTextElement.classList.add('enabled');
+            buttonTextElement.innerHTML = t.checkoutEnabled;
+            buttonDiv.onclick = closeOrder;
+        } else {
+            buttonTextElement.classList.remove('enabled');
+            buttonTextElement.classList.add('disabled');
+            buttonTextElement.innerHTML = t.checkoutDisabled;
+            buttonDiv.onclick = null;
+        }
+    }
+
+    function verifyOrder() {
+        updateCheckoutButton(currentLang);
+    }
+
+    function calculateTotal() {
+        let total = 0;
+        let itemNames = {};
+
+        for (const key in selectedItems) {
+            const item = selectedItems[key];
+            if (item) {
+
+                let priceString = item.price.replace(/[^\d,\.]/g, '');
+                priceString = priceString.replace(',', '.');
+
+                const priceValue = parseFloat(priceString) || 0;
+                total += priceValue;
+
+                itemNames[key] = item.name;
+            }
+        }
+        return { total, itemNames };
+    }
+
+function closeOrder() {
+    const { total } = calculateTotal();
+    const t = translations[currentLang];
+    
+    const detailsContainer = document.getElementById("order-details");
+    const totalElement = document.getElementById("order-total");
+    const modal = document.getElementById("information-modal");
+
+    const currencyPrefix = currentLang === 'pt' ? '$' : '$';
+    
+    let detailsHTML = '';
+    for (const key in selectedItems) {
+        const item = selectedItems[key];
+        if (item) {
+            const priceDisplay = item.price; 
+            
+            detailsHTML += `
+                <div class="item-detail">
+                    <span class="detail-name">${item.name}</span> <strong class="detail-price">${priceDisplay}</strong>
+                </div>
+            `;
+        }
+    }
+    detailsContainer.innerHTML = detailsHTML;
+    
+    let formattedTotal = total.toFixed(2);
+    if (currentLang === 'pt') {
+        formattedTotal = formattedTotal.replace('.', ',');
+    }
+    formattedTotal = currencyPrefix + formattedTotal;
+
+    totalElement.innerHTML = `<strong>${t.confirmTotal} ${formattedTotal}</strong>`;
+    
+    document.getElementById('confirm-order-title').textContent = t.confirmTitle;
+    document.querySelector('.confirm-order-button').textContent = t.confirmButton;
+    document.querySelector('.cancel-button').textContent = t.cancelButton;
+    
+    modal.classList.remove("hidden");
+}
+
+function confirmOrder() {
+    const { total, itemNames } = calculateTotal();
+    const t = translations[currentLang];
+    
+    let totalDisplay = total.toFixed(2);
+    
+    const currencyPrefix = '$'; 
+    if (currentLang === 'pt') {
+        totalDisplay = totalDisplay.replace('.', ',');
+    }
+    totalDisplay = currencyPrefix + totalDisplay;
+
+    const pratoSelecionado = itemNames.mainCourses;
+    const bebidaSelecionada = itemNames.drinks;
+    const sobremesaSelecionada = itemNames.desserts;
+
+    let mensagem = t.whatsappMessage
+        .replace('{mainCourse}', pratoSelecionado)
+        .replace('{drink}', bebidaSelecionada)
+        .replace('{dessert}', sobremesaSelecionada)
+        .replace('{total}', totalDisplay);
+
+    const phoneNumber = ""; 
+    const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(mensagem)}`;
+    
+    window.open(whatsappLink, "_blank");
+    cancelOrder();
+}
+
+    function cancelOrder() {
+        document.getElementById("information-modal").classList.add("hidden");
     }
 
     function setLanguage(lang) {
@@ -200,6 +356,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (titleDessertsElement) titleDessertsElement.textContent = t.titleDesserts;
 
         if (languageMenu) languageMenu.style.display = 'none';
+
+        updateCheckoutButton(lang);
+        if (!document.getElementById("information-modal").classList.contains('hidden')) {
+            const t = translations[lang];
+            document.getElementById('confirm-order-title').textContent = t.confirmTitle;
+            document.querySelector('.confirm-order-button').textContent = t.confirmButton;
+            document.querySelector('.cancel-button').textContent = t.cancelButton;
+        }
 
         renderMenu(lang);
     }
