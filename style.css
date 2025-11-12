@@ -8,7 +8,7 @@ body {
 }
 
 .main-header {
-  background-color: #2581ba;
+  background-color: #8e44ad;
   width: 100vw;
   height: 70px;
   position: fixed;
@@ -64,7 +64,7 @@ body {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #333;
+  background-color: #8e44ad;
   min-width: 80px;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -81,11 +81,11 @@ body {
 }
 
 .dropdown a:hover {
-  background-color: #555;
+  background-color: #ac11db;
 }
 
 .hero h1 {
-  color: #2581ba;
+  color: #8e44ad;
   text-align: left;
   font-family: Righteous, sans-serif;
   font-size: 30px;
@@ -162,7 +162,7 @@ body {
 }
 
 .category-title h1 {
-  color: #2581ba;
+  color: #8e44ad;
   text-align: left;
   font-family: Righteous, sans-serif;
   font-size: 30px;
@@ -240,7 +240,7 @@ body {
 }
 
 .card.selected {
-  border: 3px solid #2581ba;
+  border: 3px solid #8e44ad;
   box-shadow: 0 4px 15px rgba(37, 129, 186, 0.5);
   transform: scale(1.02);
 }
@@ -286,7 +286,7 @@ body {
 }
 
 #checkout-button-text.enabled {
-  background-color: #2581ba;
+  background-color: #8e44ad;
   color: white;
 }
 
@@ -311,7 +311,7 @@ body {
   width: 310px;
   padding: 20px 0;
   border-radius: 9px;
-  background-color: #2581ba;
+  background-color: #8e44ad;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   box-sizing: border-box;
   display: flex;
@@ -373,7 +373,7 @@ body {
   font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 700;
-  color: #2581ba;
+  color: #8e44ad;
   width: 280px;
   height: 45px;
   background-color: white;
