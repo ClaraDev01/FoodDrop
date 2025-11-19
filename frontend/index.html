@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Recursive:wght@300..1000&family=Righteous&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>FoodDrop</title>
+  </head>
+  <body>
+    <header class="main-header">
+      <div>
+        <h1 class="logo-title">FoodDrop</h1>
+        <h3 class="tagline">Your favorite food, right to your door.</h3>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-button" id="language-toggle">
+          <i class="fas fa-globe"></i>
+          <span>EN</span>
+        </button>
+
+        <div class="dropdown" id="language-menu">
+          <a href="#" data-lang="en">EN</a>
+          <a href="#" data-lang="pt">PT</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1>What would you like to order today?</h1>
+    </section>
+    <section class="category-intro">
+      <p>Choose your category:</p>
+    </section>
+
+    <section class="categories-list">
+      <a class="category-card" href="category.html?type=japanese" data-category="japanese">
+        <img src="images/categories/japanese.jpeg" alt="Japanese Food" />
+        <span>Japanese Food</span>
+      </a>
+      <a class="category-card" href="category.html?type=chinese" data-category="chinese">
+        <img src="images/categories/chinese.jpeg" alt="Chinese Food" />
+        <span>Chinese Food</span>
+      </a>
+      <a class="category-card" href="category.html?type=italian" data-category="italian">
+        <img src="images/categories/italian.jpeg" alt="Italian Food" />
+        <span>Italian Food</span>
+      </a>
+      <a class="category-card" href="category.html?type=mexican" data-category="mexican">
+        <img src="images/categories/mexican.jpeg" alt="Mexican Food" />
+        <span>Mexican Food</span>
+      </a>
+      <a class="category-card" href="category.html?type=brazilian" data-category="brazilian">
+        <img src="images/categories/brazilian.jpeg" alt="Brazilian Food" />
+        <span>Brazilian Food</span>
+      </a>
+    </section>
+    <script src="script.js"></script>
+  </body>
+</html>
